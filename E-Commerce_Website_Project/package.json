@@ -1,0 +1,19 @@
+{
+  "name": "e-commerce_website_project",
+  "version": "1.0.0",
+  "description": "this e-commerce website is look like as amazon , flipkart website.",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon ./app.js"
+  },
+  "author": "Amarjeet Kumar",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^3.1.8",
+    "ejs-mate": "^4.0.0",
+    "express": "^4.18.2",
+    "method-override": "^3.0.0",
+    "mongoose": "^6.8.2",
+    "nodemon": "^2.0.20"
+  }
+}
