@@ -10,12 +10,74 @@
         <h5 class="card-title mb-3">$ <%= product.price %></h5>
         <a href="#" class="btn btn-primary btn-sm">Buy</a>
         <a href="#" class="btn btn-secondary btn-sm">Add to Cart</a>
-        <a href="/products/<%=product._id%>/edit" class="btn btn-info btn-sm">Edit</a>
-        <a href="/products/<%=product._id%>/delete" class="btn btn-danger btn-sm">Delete</a>
+        <a href="/products/<%=product._id%>/edit" class="btn btn-info btn-sm"
+          >Edit</a
+        >
+        <a
+          href="/products/<%=product._id%>/delete"
+          class="btn btn-danger btn-sm"
+          >Delete</a
+        >
       </div>
     </div>
   </div>
-  <div class="col-lg-6">
+  <div class="col-lg-4">
     <h1 display-5>Leave Your Review</h1>
+
+    <form action="/products/<%=product._id%>/review" method="POST">
+      <div>
+        <fieldset class="starability-basic">
+          <input
+            type="radio"
+            id="no-rate"
+            class="input-no-rate"
+            name="rating"
+            value="0"
+            checked
+            aria-label="No rating."
+          />
+          <input type="radio" id="first-rate1" name="rating" value="1" />
+          <label for="first-rate1" title="Terrible">1 star</label>
+          <input type="radio" id="first-rate2" name="rating" value="2" />
+          <label for="first-rate2" title="Not good">2 stars</label>
+          <input type="radio" id="first-rate3" name="rating" value="3" />
+          <label for="first-rate3" title="Average">3 stars</label>
+          <input type="radio" id="first-rate4" name="rating" value="4" />
+          <label for="first-rate4" title="Very good">4 stars</label>
+          <input type="radio" id="first-rate5" name="rating" value="5" />
+          <label for="first-rate5" title="Amazing">5 stars</label>
+        </fieldset>
+      </div>
+
+      <div class="mb-3">
+        <label for="comment" class="form-lable">Description</label>
+        <textarea
+          name="comment"
+          id="desc"
+          rows="3"
+          class="form-control"
+        ></textarea>
+      </div>
+      <button class="btn btn-success btn-sm">Submit</button>
+    </form>
+
+    <div class="my-3">
+      <% for(let review of product.reviews){ %>
+
+      <div class="card mb-3">
+        <div class="card-body">
+          <p class="starability-result" data-rating="<%=review.rating%>">
+            Rated: <%=review.rating%> stars
+          </p>
+          <p class="card-text"><%=review.comment%></p>
+          <% if(review.createdAt){ %>
+          <p class="text-muted"><%=review.createdAt.toDateString()%></p>
+          <% } %>
+          <a href="#" class="btn btn-danger btn-sm">Delete</a>
+        </div>
+      </div>
+
+      <% } %>
+    </div>
   </div>
 </div>

@@ -50,9 +50,20 @@ const products = [
     desc: "Our digital SLR cameras capture stunning images with cutting-edge speed, quality, and high performance. Unlock your creativity with DSLR cameras from Nikon.For generations, Nikon cameras have been trusted by photographers and picture takers of every caliber for their enduring performance and outstanding image ...",
   },
 ];
-Product.deleteMany({}).then(() => {
-  console.log("Product deleted");
-});
-Product.insertMany(products).then(() => {
-  console.log("Product Seeded");
-});
+
+
+// Product.deleteMany({}).then(() => {
+//   console.log("Product deleted");
+// });
+
+// Product.insertMany(products).then(() => {
+//   console.log("Product Seeded");
+// });
+
+async function seedDb() {
+  await Product.deleteMany({});
+  await Product.insertMany(products);
+  console.log('Product seeded');
+}
+
+seedDb();

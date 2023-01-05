@@ -2,7 +2,7 @@
 
 <div class="row">
   <div class="col-md-6 mx-auto">
-    <form action="/products" method="POST">
+    <form action="/products" method="POST" class="form-validation" novalidate>
       <div class="mb-3">
         <label class="form-label" for="name">Name : </label>
         <input
@@ -11,7 +11,10 @@
           name="name"
           id="name"
           placeholder="Product Name"
+          required
         />
+        <div class="valid-feedback">Looks good!</div>
+        <div class="invalid-feedback">please provide product name.</div>
       </div>
       <div class="mb-3">
         <label for="img" class="form-label">Image URL :</label>
@@ -21,7 +24,10 @@
           name="img"
           id="img"
           placeholder="Product Image URL"
+          required
         />
+        <div class="valid-feedback">Looks good!</div>
+        <div class="invalid-feedback">please provide product image url.</div>
       </div>
 
       <div class="mb-3">
@@ -35,7 +41,10 @@
             aria-label="Username"
             placeholder="Enter the price of the product"
             aria-describedby="basic-addon1"
+            required
           />
+          <div class="valid-feedback">Looks good!</div>
+          <div class="invalid-feedback">please provide price.</div>
         </div>
       </div>
 
@@ -47,7 +56,9 @@
           id="desc"
           rows="5"
           placeholder="Tell about the product....."
+          required
         ></textarea>
+        <div class="valid-feedback">Looks good!</div>
       </div>
       <button type="submit" class="btn btn-sm btn-success">Add</button>
     </form>
