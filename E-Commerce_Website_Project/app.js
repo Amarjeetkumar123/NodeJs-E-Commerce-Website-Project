@@ -2,10 +2,12 @@ const express = require("express");
 const app = express();
 const path = require("path");
 const mongoose = require("mongoose");
+mongoose.set("strictQuery", true);
 const { copyFileSync } = require("fs");
-mongoose.set('strictQuery', true);
-const ejsMate = require('ejs-mate');
-const methodOverride = require('method-override');
+const ejsMate = require("ejs-mate");
+const methodOverride = require("method-override");
+const session = require("express-session");
+const flash = require("connect-flash");
 
 // Database connection
 mongoose
@@ -13,16 +15,31 @@ mongoose
   .then(() => console.log("DB Connected"))
   .catch((err) => console.log(err));
 
-
-app.engine('ejs', ejsMate);
+app.engine("ejs", ejsMate);
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
-app.use(methodOverride('_method'));
+app.use(methodOverride("_method"));
 
-const productRoutes = require('./routes/product');
-const reviewRoutes = require('./routes/review');
+const sessionConfig = {
+  secret: "weneedsomebettersecret",
+  resave: false,
+  saveUninitialized: true,
+  // cookie: { secure: true },
+};
+
+app.use(session(sessionConfig));
+app.use(flash());
+
+app.use((req, res, next) => {
+  res.locals.success = req.flash("success");
+  res.locals.error = req.flash("error");
+  next();
+});
+
+const productRoutes = require("./routes/product");
+const reviewRoutes = require("./routes/review");
 
 app.use(productRoutes);
 app.use(reviewRoutes);

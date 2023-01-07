@@ -1,3 +1,4 @@
+const { number } = require("joi");
 const mongoose = require("mongoose");
 const Review = require("./review");
 
@@ -21,19 +22,24 @@ const productSchema = new mongoose.Schema({
     type: String,
     trim: true,
   },
-  reviews: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref:'Review'
-  }]
+  avgRating: {
+    type: Number,
+    default: 0,
+  },
+  reviews: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Review",
+    },
+  ],
 });
 
 // Mongoose middleware function to delete all the associated reviews
-productSchema.post('findOneAndDelete', async function (product) {
-  
+productSchema.post("findOneAndDelete", async function (product) {
   if (product.reviews.length > 0) {
     await Review.deleteMany({ _id: { $in: product.reviews } });
   }
-})
+});
 
 const Product = mongoose.model("Product", productSchema);
 

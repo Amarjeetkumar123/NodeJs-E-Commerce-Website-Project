@@ -28,7 +28,7 @@ router.post("/products", validateProduct, async (req, res) => {
     const { name, img, price, desc } = req.body;
 
     await Product.create({ name, img, price: parseFloat(price), desc });
-
+    req.flash('success', 'Added New Product Successfully!!');
     res.redirect("/products");
   } catch (e) {
     res.status(500).render("error", { err: e.message });
@@ -42,8 +42,8 @@ router.get("/products/:id", async (req, res) => {
     const { id } = req.params;
 
     const product = await Product.findById(id).populate("reviews");
-
-    res.render("products/show", { product });
+  
+    res.render("products/show", { product});
   } catch (e) {
     res.status(500).render("error", { err: e.message });
   }
@@ -69,6 +69,8 @@ router.patch("/products/:id", async (req, res) => {
     const { name, img, price, desc } = req.body;
 
     await Product.findByIdAndUpdate(id, { name, img, price, desc });
+    // alert flash message
+    req.flash('success', 'Edit Your Product Successfully');
 
     res.redirect(`/products/${id}`);
   } catch (e) {
