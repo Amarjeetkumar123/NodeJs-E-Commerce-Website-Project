@@ -7,8 +7,8 @@ main {
 }
 
 .products .card img{
-    height: 200px;
-    padding: 5px;
+    height: 210px;
+    padding: 10px;
 }
 
 .show-btn{
@@ -41,6 +41,7 @@ main {
 
 footer{
     background-color: var(--main-color);
+    
 }
 
 @media screen and (max-width:560px){

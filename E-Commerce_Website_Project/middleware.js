@@ -11,6 +11,14 @@ module.exports.validateProduct = (req, res, next) => {
   next();
 };
 
+module.exports.isLoggedIn = (req, res, next) => {
+  if (!req.isAuthenticated()) {
+    req.flash("error", "You need to Login first to do that!");
+    return res.redirect("/login");
+  }
+  next();
+};
+
 module.exports.validateReview = (req, res, next) => {
   const { rating, comment } = req.body;
   const { error } = reviewSchema.validate({ rating, comment });

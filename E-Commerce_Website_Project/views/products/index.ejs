@@ -8,7 +8,7 @@
   <section id="heading"> 
     <h4 class="display-4"><i class="fab fa-shopify" style="margin-right: 20px;"></i>Shopping-Cart</h4>
   </section>
-  <div class="row products">
+  <div class="row products gx-2">
       <%for(let product of products){%>
 
           <div class="col-lg-3 col-md-4 mb-3 d-flex">
@@ -17,7 +17,7 @@
 
                   <img src="<%=product.img%>" class="card-img-top" alt="item image">
 
-                  <span class="badge rounded-pill bg-light text-dark w-25 position-absolute translate-middle-y" style="top:34.5%;left:6%"><%=product.avgRating%>  &star; | <%=product.reviews.length%></span>
+                  <span class="badge rounded-pill bg-light text-dark w-25 position-absolute translate-middle-y" style="top:39%;left:5%"><%=product.avgRating%>  &star; | <%=product.reviews.length%></span>
 
                   <div class="card-body">
 

@@ -3,7 +3,7 @@ const router = express.Router();
 const Product = require("../models/product");
 const Review = require("../models/review");
 
-const { validateProduct} = require('../middleware');
+const { isLoggedIn,validateProduct} = require('../middleware');
 
 router.get("/products", async (req, res) => {
   try {
@@ -15,7 +15,9 @@ router.get("/products", async (req, res) => {
 });
 
 // Add new product
-router.get("/products/new", (req, res) => {
+router.get("/products/new",isLoggedIn, (req, res) => {
+
+
   try {
     res.render("products/new");
   } catch (e) {
@@ -50,7 +52,7 @@ router.get("/products/:id", async (req, res) => {
 });
 
 // edit the product
-router.get("/products/:id/edit", async (req, res) => {
+router.get("/products/:id/edit",isLoggedIn, async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -63,7 +65,7 @@ router.get("/products/:id/edit", async (req, res) => {
 });
 
 // update
-router.patch("/products/:id", async (req, res) => {
+router.patch("/products/:id",isLoggedIn, async (req, res) => {
   try {
     const { id } = req.params;
     const { name, img, price, desc } = req.body;
@@ -80,7 +82,7 @@ router.patch("/products/:id", async (req, res) => {
 
 // delete
 
-router.get("/products/:id/delete", async (req, res) => {
+router.get("/products/:id/delete",isLoggedIn, async (req, res) => {
   try {
     const { id } = req.params;
 

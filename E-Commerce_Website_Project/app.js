@@ -8,6 +8,9 @@ const ejsMate = require("ejs-mate");
 const methodOverride = require("method-override");
 const session = require("express-session");
 const flash = require("connect-flash");
+const passport = require("passport");
+const LocalStrategy = require("passport-local");
+const User = require("./models/user");
 
 // Database connection
 mongoose
@@ -26,23 +29,43 @@ const sessionConfig = {
   secret: "weneedsomebettersecret",
   resave: false,
   saveUninitialized: true,
-  // cookie: { secure: true },
+  cookie: {
+    httpOnly: true,
+    expires: Date.now() + 1000 * 60 * 60 * 24 * 7 * 1,
+    maxAge: 1000 * 60 * 60 * 24 * 7 * 1,
+  },
 };
 
 app.use(session(sessionConfig));
 app.use(flash());
 
+// Initialising the middleware for passport
+app.use(passport.initialize());
+app.use(passport.session());
+
+// login and logOut session
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+// Authentication
+passport.use(new LocalStrategy(User.authenticate()));
+
 app.use((req, res, next) => {
+  res.locals.currentUser = req.user;
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
   next();
 });
 
+// Routes
+
 const productRoutes = require("./routes/product");
 const reviewRoutes = require("./routes/review");
+const authRoutes = require("./routes/auth");
 
 app.use(productRoutes);
 app.use(reviewRoutes);
+app.use(authRoutes);
 
 const port = 5000;
 app.listen(port, () => {
