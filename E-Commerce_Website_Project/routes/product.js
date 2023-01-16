@@ -3,7 +3,7 @@ const router = express.Router();
 const Product = require("../models/product");
 const Review = require("../models/review");
 
-const { isLoggedIn,validateProduct} = require('../middleware');
+const { isLoggedIn,validateProduct, isSeller, isProductAuthor} = require('../middleware');
 
 router.get("/products", async (req, res) => {
   try {
@@ -15,7 +15,7 @@ router.get("/products", async (req, res) => {
 });
 
 // Add new product
-router.get("/products/new",isLoggedIn, (req, res) => {
+router.get("/products/new",isLoggedIn,isSeller, (req, res) => {
 
 
   try {
@@ -25,11 +25,12 @@ router.get("/products/new",isLoggedIn, (req, res) => {
   }
 });
 
-router.post("/products", validateProduct, async (req, res) => {
+// creating new product
+router.post("/products",isLoggedIn,isSeller, validateProduct, async (req, res) => {
   try {
     const { name, img, price, desc } = req.body;
 
-    await Product.create({ name, img, price: parseFloat(price), desc });
+    await Product.create({ name, img, price: parseFloat(price), desc ,author:req.user._id});
     req.flash('success', 'Added New Product Successfully!!');
     res.redirect("/products");
   } catch (e) {
@@ -52,7 +53,7 @@ router.get("/products/:id", async (req, res) => {
 });
 
 // edit the product
-router.get("/products/:id/edit",isLoggedIn, async (req, res) => {
+router.get("/products/:id/edit",isLoggedIn,isProductAuthor, async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -65,7 +66,7 @@ router.get("/products/:id/edit",isLoggedIn, async (req, res) => {
 });
 
 // update
-router.patch("/products/:id",isLoggedIn, async (req, res) => {
+router.patch("/products/:id",isLoggedIn,isProductAuthor,isSeller, async (req, res) => {
   try {
     const { id } = req.params;
     const { name, img, price, desc } = req.body;
@@ -73,7 +74,7 @@ router.patch("/products/:id",isLoggedIn, async (req, res) => {
     await Product.findByIdAndUpdate(id, { name, img, price, desc });
     // alert flash message
     req.flash('success', 'Edit Your Product Successfully');
-
+    
     res.redirect(`/products/${id}`);
   } catch (e) {
     res.status(500).render("error", { err: e.message });
@@ -82,7 +83,7 @@ router.patch("/products/:id",isLoggedIn, async (req, res) => {
 
 // delete
 
-router.get("/products/:id/delete",isLoggedIn, async (req, res) => {
+router.get("/products/:id/delete",isLoggedIn,isSeller, isProductAuthor,async (req, res) => {
   try {
     const { id } = req.params;
 

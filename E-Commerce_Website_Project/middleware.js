@@ -12,6 +12,12 @@ module.exports.validateProduct = (req, res, next) => {
 };
 
 module.exports.isLoggedIn = (req, res, next) => {
+
+   console.log(req.originalUrl);
+  req.session.returnUrl = req.originalUrl;
+  // console.log(req.session);
+ 
+
   if (!req.isAuthenticated()) {
     req.flash("error", "You need to Login first to do that!");
     return res.redirect("/login");
@@ -27,6 +33,30 @@ module.exports.validateReview = (req, res, next) => {
     const msg = error.details.map((err) => err.message).join(",");
     // console.log(msg);
     return res.render("error", { err: msg });
+  }
+  next();
+};
+
+
+module.exports.isSeller = (req, res, next) => {
+  if (!(req.user.role && req.user.role === "seller")) {
+    req.flash("error", "You dont have permissions to do that");
+    return res.redirect("/products");
+  }
+
+  next();
+};
+
+
+
+module.exports.isProductAuthor = async (req, res, next) => {
+  // Getting a product id
+  const { id } = req.params;
+  const product = await Product.findById(id);
+
+  if (!(product.author && product.author.equals(req.user._id))) {
+    req.flash("error", "You dont have permissions to do that");
+    return res.redirect(`/products/${id}`);
   }
   next();
 };

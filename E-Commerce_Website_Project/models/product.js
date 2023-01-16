@@ -1,4 +1,4 @@
-const { number } = require("joi");
+const { number, object } = require("joi");
 const mongoose = require("mongoose");
 const Review = require("./review");
 
@@ -25,6 +25,10 @@ const productSchema = new mongoose.Schema({
   avgRating: {
     type: Number,
     default: 0,
+  },
+  author: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
   },
   reviews: [
     {

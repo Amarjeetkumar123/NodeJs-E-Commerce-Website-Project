@@ -3,6 +3,7 @@ const passport = require("passport");
 const router = express.Router();
 const User = require("../models/user");
 
+
 // router.get("/fakeuser", async(req, res) => {
 //   const user = {
 //     email: "amar@gmail.com",
@@ -19,9 +20,10 @@ router.get("/register", (req, res) => {
 });
 
 router.post("/register", async (req, res) => {
+
   try {
-    const { username, password, email } = req.body;
-    const user = new User({ username, email });
+    const { username, password, email,role } = req.body;
+    const user = new User({ username, email,role });
     const newUser = await User.register(user, password);
 
     req.login(newUser, function (err) {
@@ -29,6 +31,9 @@ router.post("/register", async (req, res) => {
         return res.send(err);
       }
       req.flash("success", "Welcome, You are Registered Successfully!!");
+
+      // console.log(newUser);
+
       res.redirect("/products");
     });
   } catch (e) {
@@ -49,6 +54,13 @@ router.post(
   }),
   (req, res) => {
     // console.log(req.user);
+
+   
+  
+    // let redirectUrl = req.session.returnUrl;
+     console.log(req.session);
+
+
     req.flash("success", `Welcome Back ${req.user.username} Again !!`);
     console.log("Login Successfully");
     res.redirect("/products");
