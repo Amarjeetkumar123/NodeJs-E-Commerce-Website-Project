@@ -5,6 +5,12 @@ const Review = require("../models/review");
 
 const { isLoggedIn,validateProduct, isSeller, isProductAuthor} = require('../middleware');
 
+
+// home page 
+router.get('/', (req, res) => {
+  res.render('home')
+})
+
 router.get("/products", async (req, res) => {
   try {
     const products = await Product.find({});

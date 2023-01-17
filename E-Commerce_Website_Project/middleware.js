@@ -12,11 +12,16 @@ module.exports.validateProduct = (req, res, next) => {
 };
 
 module.exports.isLoggedIn = (req, res, next) => {
-
-   console.log(req.originalUrl);
-  req.session.returnUrl = req.originalUrl;
+  //  console.log(req.originalUrl);
+  // req.session.returnUrl = req.originalUrl;
   // console.log(req.session);
- 
+
+
+  //  console.log(req.xhr);  // check request is AJAX request or not
+
+  if (req.xhr && !req.isAuthenticated()) {
+    return res.status(401).json({ msg: "You need to login first" }); // 401 means "UnAthorized error"
+  }
 
   if (!req.isAuthenticated()) {
     req.flash("error", "You need to Login first to do that!");

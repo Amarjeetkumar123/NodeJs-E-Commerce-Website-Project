@@ -44,6 +44,10 @@ footer{
     
 }
 
+.fas.fa-heart{
+    color: red;
+}
+
 @media screen and (max-width:560px){
     .reviews-section{
         width: 90vw;

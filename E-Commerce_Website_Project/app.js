@@ -12,6 +12,17 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user");
 
+// Routes
+
+const productRoutes = require("./routes/product");
+const reviewRoutes = require("./routes/review");
+const authRoutes = require("./routes/auth");
+const cartRoutes = require("./routes/cart");
+
+// APIs
+const productApis = require("./routes/api/productapi");
+
+
 // Database connection
 mongoose
   .connect("mongodb://127.0.0.1:27017/shopping-app")
@@ -58,15 +69,12 @@ app.use((req, res, next) => {
   next();
 });
 
-// Routes
-
-const productRoutes = require("./routes/product");
-const reviewRoutes = require("./routes/review");
-const authRoutes = require("./routes/auth");
-
+// Using Routes
 app.use(productRoutes);
 app.use(reviewRoutes);
 app.use(authRoutes);
+app.use(productApis);
+app.use(cartRoutes);
 
 const port = 5000;
 app.listen(port, () => {
