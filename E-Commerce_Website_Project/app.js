@@ -1,12 +1,13 @@
 const express = require("express");
 const app = express();
+require("dotenv").config();
 const path = require("path");
 const mongoose = require("mongoose");
 mongoose.set("strictQuery", true);
 const { copyFileSync } = require("fs");
 const ejsMate = require("ejs-mate");
 const methodOverride = require("method-override");
-const session = require("express-session"); 
+const session = require("express-session");
 const flash = require("connect-flash");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
@@ -22,10 +23,10 @@ const cartRoutes = require("./routes/cart");
 // APIs
 const productApis = require("./routes/api/productapi");
 
-
 // Database connection
+
 mongoose
-  .connect("mongodb://127.0.0.1:27017/shopping-app")
+  .connect(process.env.DB_Url)
   .then(() => console.log("DB Connected"))
   .catch((err) => console.log(err));
 
@@ -76,7 +77,7 @@ app.use(authRoutes);
 app.use(productApis);
 app.use(cartRoutes);
 
-const port = 5000;
+const port = process.env.PORT || 5000;
 app.listen(port, () => {
   console.log(`Server running at port http://localhost:${port}`);
 });
