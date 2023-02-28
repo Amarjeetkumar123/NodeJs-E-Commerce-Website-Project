@@ -26,7 +26,9 @@ const productApis = require("./routes/api/productapi");
 // Database connection
 
 mongoose
-  .connect(process.env.DB_Url)
+  .connect(
+    "mongodb+srv://amarjeet_kumar:amarjeet123@cluster0.ieapcxp.mongodb.net/ShoppingApp?retryWrites=true&w=majority"
+  )
   .then(() => console.log("DB Connected"))
   .catch((err) => console.log(err));
 
