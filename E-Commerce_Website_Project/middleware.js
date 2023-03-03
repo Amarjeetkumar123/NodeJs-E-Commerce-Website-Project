@@ -1,4 +1,5 @@
 const { productSchema, reviewSchema } = require("./schemas");
+const Product = require("./models/product");
 
 module.exports.validateProduct = (req, res, next) => {
   const { name, img, desc, price } = req.body;
@@ -57,8 +58,11 @@ module.exports.isSeller = (req, res, next) => {
 module.exports.isProductAuthor = async (req, res, next) => {
   // Getting a product id
   const { id } = req.params;
-  const product = await Product.findById(id);
+  // console.log(id);
 
+
+  const product = await Product.findById(id);
+  // console.log(product);
   if (!(product.author && product.author.equals(req.user._id))) {
     req.flash("error", "You dont have permissions to do that");
     return res.redirect(`/products/${id}`);
